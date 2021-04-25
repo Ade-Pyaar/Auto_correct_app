@@ -25,6 +25,7 @@ with open('vocab.json', 'r') as vocab_file:
 def index():
     suggestion = {}
     verbose = False
+    word = ''
     if request.method == "POST":
         word = request.form.get("word").strip().lower()
         verbose = False if request.form.get("verbose") == "No" else True
@@ -32,4 +33,4 @@ def index():
 
         suggestion = get_corrections(word, probs, vocab, number)     
 
-    return render_template("index.html", suggestion=suggestion, verbose=verbose)
+    return render_template("index.html", suggestion=suggestion, verbose=verbose, word=word)
