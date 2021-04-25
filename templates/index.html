@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+    <title>Auto-correct App</title>
+
+  </head>
+
+  <body>
+    <main role="main" class="container mb-5">
+      <div class="row">
+          <div class="col-md-6">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                      {% for category, message in messages %}
+                          <div class="alert alert-{{ category }}">
+                              {{ message }}
+                          </div>
+                      {% endfor %}
+                  {% endif %}
+              {% endwith %}
+              <div class="container mb-5">
+                <br>
+                <p><b>Auto-correct App</b></p>
+                <p>Enter an incorrect word and press the <strong>Suggest</strong> button to make the model try to suggest the possible correct words.</p>
+                <p><small>PS: the model is not perfect.</small></p>
+          
+                <br><br>
+                <form autocomplete="off" method="POST">
+                  <div class="form-group">
+                    <label for="word">Enter the word to correct:</label>
+                    <input type="text" class="form-control" placeholder="Enter word" name="word">
+                  </div>
+                  <div class="form-group">
+                    <label for="verbose">Do you want verbose output:</label>
+                    <input list="verbose_list" type="text" class="form-control" placeholder="Verbose" name="verbose">
+                    <datalist id="verbose_list">
+                      <option value="Yes">
+                      <option value="No">
+                    </datalist>
+                  </div>
+                  <div class="form-group">
+                    <label for="number">How many words do you want the model to suggest:</label>
+                    <input type="number" class="form-control" placeholder="Enter number" name="number" max="5" min="2">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Suggest</button>
+                </form>
+
+                <div id="result">
+
+                </div>
+          </div>
+      </div>
+    </main>
+
+    
+
+    {% if verbose %}
+      <script>
+        let res = JSON.parse(`{{ suggestion|tojson }}`)
+        let ap = ''
+        let i = 1;
+        for(let x in res) {
+        ap += ` <p> Word ${i}: ${x}, Probability ${res[x]}<\p>`;
+        i++;
+        }
+        document.querySelector('#result').innerHTML = ap
+      </script>
+    {% else %}
+      <script>
+        let res = JSON.parse(`{{ suggestion|tojson }}`)
+        let ap = ''
+        let i = 1;
+        for(let x in res) {
+        ap += ` <p> Word ${i}: ${x}<\p>`;
+        i++;
+        }
+        document.querySelector('#result').innerHTML = ap
+      </script>
+    {% endif %}
+     
+    <style>
+      .my_footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: white;
+        color: black;
+        text-align: center;
+      }
+      </style>
+      
+      <div class="my_footer">
+        Made by Pyaar <br>
+        Email: Adebayoibrahim2468@gmail.com
+      </div>
+  </body>
+</html>
