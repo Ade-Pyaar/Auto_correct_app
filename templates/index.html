@@ -50,8 +50,10 @@
                   </div>
                   <button type="submit" class="btn btn-primary">Suggest</button>
                 </form>
-
+                
+                <br>
                 <div id="result">
+                  <p>Your word is: {{ word }}</p>
 
                 </div>
           </div>
@@ -69,7 +71,7 @@
         ap += ` <p> Word ${i}: ${x}, Probability ${res[x]}<\p>`;
         i++;
         }
-        document.querySelector('#result').innerHTML = ap
+        document.querySelector('#result').innerHTML += ap
       </script>
     {% else %}
       <script>
@@ -80,7 +82,7 @@
         ap += ` <p> Word ${i}: ${x}<\p>`;
         i++;
         }
-        document.querySelector('#result').innerHTML = ap
+        document.querySelector('#result').innerHTML += ap
       </script>
     {% endif %}
      
